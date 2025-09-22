@@ -58,6 +58,14 @@ function showFallback() {
     document.getElementById('purposeText').innerText = tn ? `উদ্দেশ্য: ${tn}` : '';
     const qr = 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' + encodeURIComponent(upi);
     document.getElementById('qrImg').src = qr;
+
+    // Add UPI open button handler
+    const openBtn = document.getElementById('openUpiBtn');
+    if (openBtn) {
+        openBtn.onclick = function () {
+            window.location.href = upi;
+        };
+    }
 }
 
 function copyVPA() {

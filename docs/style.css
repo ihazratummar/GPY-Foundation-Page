@@ -172,6 +172,20 @@ body {
     color: #155bb5;
 }
 
+.btn-row {
+    display: flex;
+    gap: 1em;
+    justify-content: center;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    flex-wrap: wrap;
+}
+
+.btn-row .btn {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
 @media (max-width: 500px) {
     body {
         padding: 0.5rem;
