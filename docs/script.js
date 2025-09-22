@@ -12,7 +12,10 @@ if (tr) upi += `&tr=${encodeURIComponent(tr)}`;
 if (tn) upi += `&tn=${encodeURIComponent(tn)}`;
 if (cu) upi += `&cu=${encodeURIComponent(cu)}`;
 
-document.getElementById('msg').innerHTML = '<span class="spinner"></span>ইউপিআই অ্যাপ খোলা হচ্ছে...';
+document.getElementById('msg').innerHTML = '<span class="spinner"></span>পেমেন্ট প্রস্তুত করা হচ্ছে...';
+
+// Always show fallback after 1.2s (no iframe, no auto-redirect)
+setTimeout(showFallback, 1200);
 
 function showFallback() {
     document.getElementById('msg').style.display = 'none';
@@ -23,18 +26,6 @@ function showFallback() {
     const qr = 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' + encodeURIComponent(upi);
     document.getElementById('qrImg').src = qr;
 }
-
-setTimeout(() => {
-    const start = Date.now();
-    const iframe = document.createElement('iframe');
-    iframe.style.display = 'none';
-    iframe.src = upi;
-    document.body.appendChild(iframe);
-    setTimeout(() => {
-        if (Date.now() - start < 3000) showFallback();
-        try { document.body.removeChild(iframe); } catch (e) { }
-    }, 1200);
-}, 50);
 
 function copyVPA() {
     navigator.clipboard?.writeText(pa).then(() => {
