@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Pay via UPI</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <style>
+        body {
+            font-family: system-ui, Arial;
+            max-width: 720px;
+            margin: 2rem auto;
+            padding: 1rem;
+            text-align: center
+        }
+
+        .qr {
+            margin-top: 1rem
+        }
+
+        .vpa {
+            margin-top: 0.75rem;
+            font-weight: 600
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: .6rem 1rem;
+            border-radius: 8px;
+            background: #1f7ceb;
+            color: #fff;
+            text-decoration: none
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Donate via UPI</h1>
+    <div id="msg">Preparing payment...</div>
+
+    <div id="fallback" style="display:none">
+        <p class="vpa">UPI ID: <span id="vpaText"></span></p>
+        <p>Scan QR with your UPI app or copy the VPA to pay.</p>
+        <div class="qr"><img id="qrImg" alt="UPI QR" /></div>
+        <p><a id="copyBtn" class="btn" href="#" onclick="copyVPA();return false;">Copy VPA</a></p>
+    </div>
+
+    <script>
+        function get(q) { const u = new URL(location.href); return u.searchParams.get(q) || ''; }
+        const pa = get('pa') || 'isk7908772577@okaxis';
+        const pn = decodeURIComponent(get('pn') || 'GPY Foundation');
+        const tr = get('tr') || ('REF' + Date.now());
+        const tn = decodeURIComponent(get('tn') || 'Donation');
+        const am = get('am') || '';
+        const cu = get('cu') || 'INR';
+
+        let upi = `upi://pay?pa=${encodeURIComponent(pa)}&pn=${encodeURIComponent(pn)}&tr=${encodeURIComponent(tr)}&tn=${encodeURIComponent(tn)}${am ? ('&am=' + encodeURIComponent(am)) : ''}&cu=${encodeURIComponent(cu)}`;
+
+        document.getElementById('msg').innerText = 'Opening UPI app...';
+
+        function showFallback() {
+            document.getElementById('msg').style.display = 'none';
+            document.getElementById('fallback').style.display = 'block';
+            document.getElementById('vpaText').innerText = pa;
+            // build QR using Google Chart API
+            const qr = 'https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=' + encodeURIComponent(upi);
+            document.getElementById('qrImg').src = qr;
+        }
+
+        // Try redirect (mobile) — give browser 1s to open app, otherwise show fallback
+        setTimeout(() => {
+            // create temporary iframe for some browsers (Android)
+            const start = Date.now();
+            const iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            iframe.src = upi;
+            document.body.appendChild(iframe);
+            setTimeout(() => {
+                // if user is still on page after ~1s, show fallback
+                if (Date.now() - start < 3000) showFallback();
+                try { document.body.removeChild(iframe); } catch (e) { }
+            }, 1200);
+        }, 50);
+
+        // copy VPA function
+        function copyVPA() {
+            navigator.clipboard?.writeText(pa).then(() => alert('VPA copied to clipboard'));
+        }
+    </script>
+</body>
+
+</html>
