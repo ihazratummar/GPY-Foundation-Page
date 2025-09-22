@@ -14,8 +14,31 @@ if (cu) upi += `&cu=${encodeURIComponent(cu)}`;
 
 document.getElementById('msg').innerHTML = '<span class="spinner"></span>পেমেন্ট প্রস্তুত করা হচ্ছে...';
 
-// Always show fallback after 1.2s (no iframe, no auto-redirect)
-setTimeout(showFallback, 1200);
+// Detect in-app browsers (Telegram, Facebook, Instagram, etc.)
+function isInAppBrowser() {
+    const ua = navigator.userAgent || '';
+    return /FBAN|FBAV|Instagram|Line|MicroMessenger|Twitter|Snapchat|Telegram/i.test(ua);
+}
+
+// Show warning if in in-app browser, else try to open UPI app
+if (isInAppBrowser()) {
+    showFallback();
+    alert('দয়া করে এই পেজটি আপনার ফোনের ডিফল্ট ব্রাউজারে (যেমন Chrome, Firefox) খুলুন, তাহলে ইউপিআই অ্যাপ সঠিকভাবে কাজ করবে।');
+} else {
+    // Try to open UPI app (old logic)
+    setTimeout(() => {
+        const start = Date.now();
+        const iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        iframe.src = upi;
+        document.body.appendChild(iframe);
+        setTimeout(() => {
+            // If user is still on page after ~1s, show fallback
+            if (Date.now() - start < 3000) showFallback();
+            try { document.body.removeChild(iframe); } catch (e) { }
+        }, 1200);
+    }, 50);
+}
 
 function showFallback() {
     document.getElementById('msg').style.display = 'none';

@@ -144,6 +144,34 @@ body {
     line-height: 1.7;
 }
 
+.contact-section {
+    background: #f8fbff;
+    border-radius: 16px;
+    margin: 2rem auto 1.5rem auto;
+    padding: 1.5rem 1.2rem;
+    max-width: 600px;
+    box-shadow: 0 2px 16px #1f7ceb11;
+    text-align: left;
+}
+
+.contact-section h2 {
+    color: #1f7ceb;
+    margin-top: 0;
+    margin-bottom: 0.5em;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.contact-section a {
+    color: #1f7ceb;
+    text-decoration: underline;
+    word-break: break-all;
+}
+
+.contact-section a:hover {
+    color: #155bb5;
+}
+
 @media (max-width: 500px) {
     body {
         padding: 0.5rem;
