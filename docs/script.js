@@ -14,16 +14,23 @@ if (cu) upi += `&cu=${encodeURIComponent(cu)}`;
 
 document.getElementById('msg').innerHTML = '<span class="spinner"></span>পেমেন্ট প্রস্তুত করা হচ্ছে...';
 
-// Detect in-app browsers (Telegram, Facebook, Instagram, etc.)
+// In-app browser detection (Telegram, Facebook, Instagram, etc.)
 function isInAppBrowser() {
     const ua = navigator.userAgent || '';
     return /FBAN|FBAV|Instagram|Line|MicroMessenger|Twitter|Snapchat|Telegram/i.test(ua);
 }
 
-// Show warning if in in-app browser, else try to open UPI app
+// Copy page URL for user
+function copyPageUrl() {
+    navigator.clipboard?.writeText(window.location.href).then(() => {
+        alert('লিঙ্ক কপি হয়েছে! এখন আপনার ব্রাউজারে পেস্ট করুন।');
+    });
+}
+
 if (isInAppBrowser()) {
+    document.getElementById('browserWarning').style.display = 'block';
+    // Don't try to open UPI app, just show fallback
     showFallback();
-    alert('দয়া করে এই পেজটি আপনার ফোনের ডিফল্ট ব্রাউজারে (যেমন Chrome, Firefox) খুলুন, তাহলে ইউপিআই অ্যাপ সঠিকভাবে কাজ করবে।');
 } else {
     // Try to open UPI app (old logic)
     setTimeout(() => {
