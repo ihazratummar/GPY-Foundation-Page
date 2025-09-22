@@ -3,8 +3,11 @@ const pa = get('pa') || '7407714217@upi';
 const pn = decodeURIComponent(get('pn') || 'GPY Foundation');
 const tr = get('tr') || ('REF' + Date.now());
 const tn = decodeURIComponent(get('tn') || 'দান (সদকা/জাকাত/ফান্ড)');
-const am = get('am') || '';
+let am = get('am') || '';
 const cu = get('cu') || 'INR';
+
+// Ensure minimum amount is 1 if not set or invalid
+if (!am || isNaN(am) || Number(am) < 1) am = '1';
 
 let upi = `upi://pay?pa=${encodeURIComponent(pa)}&pn=${encodeURIComponent(pn)}`;
 if (am) upi += `&am=${encodeURIComponent(am)}`;
