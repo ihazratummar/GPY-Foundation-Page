@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html lang="en">
 
 <head>
     <meta charset="utf-8" />
@@ -7,46 +7,102 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <style>
         body {
-            font-family: system-ui, Arial;
+            font-family: system-ui, Arial, sans-serif;
             max-width: 720px;
             margin: 2rem auto;
             padding: 1rem;
-            text-align: center
+            text-align: center;
+            background: #f8fafc;
+            color: #222;
         }
 
         .qr {
-            margin-top: 1rem
+            margin-top: 1rem;
         }
 
-        .vpa {
+        .vpa,
+        .amount,
+        .purpose {
             margin-top: 0.75rem;
-            font-weight: 600
+            font-weight: 600;
+            font-size: 1.1em;
         }
 
         .btn {
             display: inline-block;
             margin-top: 1rem;
-            padding: .6rem 1rem;
+            padding: .8rem 1.4rem;
             border-radius: 8px;
             background: #1f7ceb;
             color: #fff;
-            text-decoration: none
+            text-decoration: none;
+            font-size: 1.1em;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn:active,
+        .btn:focus {
+            background: #155bb5;
+            outline: none;
+        }
+
+        #msg {
+            margin: 2rem 0;
+            font-size: 1.2em;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 1.5em;
+            height: 1.5em;
+            border: 3px solid #1f7ceb;
+            border-top: 3px solid #fff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            vertical-align: middle;
+            margin-right: 0.5em;
+        }
+
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @media (max-width: 500px) {
+            body {
+                padding: 0.5rem;
+            }
+
+            .qr img {
+                width: 90vw;
+                max-width: 300px;
+            }
         }
     </style>
 </head>
 
 <body>
     <h1>Donate via UPI</h1>
-    <div id="msg">Preparing payment...</div>
+    <div id="msg"><span class="spinner"></span>Preparing payment...</div>
 
-    <div id="fallback" style="display:none">
+    <div id="fallback" style="display:none" aria-live="polite">
+        <p class="amount" id="amountText"></p>
+        <p class="purpose" id="purposeText"></p>
         <p class="vpa">UPI ID: <span id="vpaText"></span></p>
-        <p>Scan QR with your UPI app or copy the VPA to pay.</p>
-        <div class="qr"><img id="qrImg" alt="UPI QR" /></div>
-        <p><a id="copyBtn" class="btn" href="#" onclick="copyVPA();return false;">Copy VPA</a></p>
+        <p>Scan this QR with your UPI app or copy the UPI ID to pay.</p>
+        <div class="qr">
+            <img id="qrImg" alt="UPI QR code for payment" width="300" height="300" />
+        </div>
+        <p>
+            <button id="copyBtn" class="btn" onclick="copyVPA();return false;">Copy UPI ID</button>
+        </p>
     </div>
 
     <script>
+        // Helper to get query params
         function get(q) { const u = new URL(location.href); return u.searchParams.get(q) || ''; }
         const pa = get('pa') || '7407714217@upi';
         const pn = decodeURIComponent(get('pn') || 'GPY Foundation');
@@ -55,37 +111,50 @@
         const am = get('am') || '';
         const cu = get('cu') || 'INR';
 
+        // Build UPI URL
         let upi = `upi://pay?pa=${encodeURIComponent(pa)}&pn=${encodeURIComponent(pn)}`;
+        if (am) upi += `&am=${encodeURIComponent(am)}`;
+        if (tr) upi += `&tr=${encodeURIComponent(tr)}`;
+        if (tn) upi += `&tn=${encodeURIComponent(tn)}`;
+        if (cu) upi += `&cu=${encodeURIComponent(cu)}`;
 
-        document.getElementById('msg').innerText = 'Opening UPI app...';
+        // Show loading message
+        document.getElementById('msg').innerHTML = '<span class="spinner"></span>Opening UPI app...';
 
+        // Show fallback UI
         function showFallback() {
             document.getElementById('msg').style.display = 'none';
             document.getElementById('fallback').style.display = 'block';
             document.getElementById('vpaText').innerText = pa;
-            // build QR using Google Chart API
-            const qr = 'https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=' + encodeURIComponent(upi);
+            document.getElementById('amountText').innerText = am ? `Amount: ₹${am}` : '';
+            document.getElementById('purposeText').innerText = tn ? `Purpose: ${tn}` : '';
+            // Build QR using Google Chart API
+            const qr = 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' + encodeURIComponent(upi);
             document.getElementById('qrImg').src = qr;
         }
 
         // Try redirect (mobile) — give browser 1s to open app, otherwise show fallback
         setTimeout(() => {
-            // create temporary iframe for some browsers (Android)
             const start = Date.now();
             const iframe = document.createElement('iframe');
             iframe.style.display = 'none';
             iframe.src = upi;
             document.body.appendChild(iframe);
             setTimeout(() => {
-                // if user is still on page after ~1s, show fallback
+                // If user is still on page after ~1s, show fallback
                 if (Date.now() - start < 3000) showFallback();
                 try { document.body.removeChild(iframe); } catch (e) { }
             }, 1200);
         }, 50);
 
-        // copy VPA function
+        // Copy VPA function
         function copyVPA() {
-            navigator.clipboard?.writeText(pa).then(() => alert('VPA copied to clipboard'));
+            navigator.clipboard?.writeText(pa).then(() => {
+                document.getElementById('copyBtn').innerText = 'Copied!';
+                setTimeout(() => {
+                    document.getElementById('copyBtn').innerText = 'Copy UPI ID';
+                }, 1200);
+            });
         }
     </script>
 </body>
