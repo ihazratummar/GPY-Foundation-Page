@@ -7,7 +7,7 @@ let am = get('am') || '';
 const cu = get('cu') || 'INR';
 
 // Ensure minimum amount is 1 if not set or invalid
-if (!am || isNaN(am) || Number(am) < 1) am = '1';
+if (!am || isNaN(am) || Number(am) < 1) am = '50';
 
 let upi = `upi://pay?pa=${encodeURIComponent(pa)}&pn=${encodeURIComponent(pn)}`;
 if (am) upi += `&am=${encodeURIComponent(am)}`;
