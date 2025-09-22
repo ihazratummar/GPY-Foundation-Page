@@ -1,0 +1,156 @@
+body {
+    font-family: 'Noto Sans Bengali', system-ui, Arial, sans-serif;
+    max-width: 720px;
+    margin: 2rem auto;
+    padding: 1rem;
+    text-align: center;
+    background: linear-gradient(135deg, #e0f7fa 0%, #f8fafc 100%);
+    color: #222;
+    position: relative;
+    overflow-x: hidden;
+}
+
+.islamic-motif {
+    width: 60px;
+    margin: 0 auto 1rem auto;
+    display: block;
+    filter: drop-shadow(0 0 8px #1f7ceb88);
+    animation: motif-glow 2s infinite alternate;
+}
+
+@keyframes motif-glow {
+    0% {
+        filter: drop-shadow(0 0 8px #1f7ceb88);
+    }
+
+    100% {
+        filter: drop-shadow(0 0 18px #1f7cebcc);
+    }
+}
+
+.greeting {
+    font-size: 1.3em;
+    color: #1f7ceb;
+    margin-bottom: 0.5em;
+    font-weight: bold;
+    letter-spacing: 0.02em;
+}
+
+.qr {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+}
+
+.qr img {
+    border-radius: 18px;
+    box-shadow: 0 0 24px 2px #1f7ceb33, 0 0 0 6px #fff;
+    animation: qr-pulse 2s infinite alternate;
+}
+
+@keyframes qr-pulse {
+    0% {
+        box-shadow: 0 0 24px 2px #1f7ceb33, 0 0 0 6px #fff;
+    }
+
+    100% {
+        box-shadow: 0 0 36px 8px #1f7ceb66, 0 0 0 10px #fff;
+    }
+}
+
+.vpa,
+.amount,
+.purpose {
+    margin-top: 0.75rem;
+    font-weight: 600;
+    font-size: 1.1em;
+}
+
+.btn {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: .8rem 1.4rem;
+    border-radius: 8px;
+    background: #1f7ceb;
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.1em;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px #1f7ceb33;
+}
+
+.btn:active,
+.btn:focus {
+    background: #155bb5;
+    outline: none;
+}
+
+#msg {
+    margin: 2rem 0;
+    font-size: 1.2em;
+}
+
+.spinner {
+    display: inline-block;
+    width: 1.5em;
+    height: 1.5em;
+    border: 3px solid #1f7ceb;
+    border-top: 3px solid #fff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    vertical-align: middle;
+    margin-right: 0.5em;
+}
+
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.thanks {
+    color: #388e3c;
+    font-weight: bold;
+    margin-top: 1em;
+    font-size: 1.1em;
+    letter-spacing: 0.01em;
+    transition: opacity 0.5s;
+}
+
+.about-vision {
+    background: #f4fafd;
+    border-radius: 16px;
+    margin: 2.5rem auto 1.5rem auto;
+    padding: 2rem 1.2rem;
+    max-width: 600px;
+    box-shadow: 0 2px 16px #1f7ceb11;
+    text-align: left;
+}
+
+.about-vision h2 {
+    color: #1f7ceb;
+    margin-top: 0;
+    margin-bottom: 0.5em;
+    font-size: 1.3em;
+    font-weight: bold;
+}
+
+.about-vision p {
+    font-size: 1.08em;
+    margin-bottom: 1.2em;
+    color: #222;
+    line-height: 1.7;
+}
+
+@media (max-width: 500px) {
+    body {
+        padding: 0.5rem;
+    }
+
+    .qr img {
+        width: 90vw;
+        max-width: 300px;
+    }
+}
