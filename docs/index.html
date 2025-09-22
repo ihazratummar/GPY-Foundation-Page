@@ -48,14 +48,14 @@
 
     <script>
         function get(q) { const u = new URL(location.href); return u.searchParams.get(q) || ''; }
-        const pa = get('pa') || 'isk7908772577@okaxis';
+        const pa = get('pa') || 'isk7908772577-3@okhdfcbank';
         const pn = decodeURIComponent(get('pn') || 'GPY Foundation');
         const tr = get('tr') || ('REF' + Date.now());
         const tn = decodeURIComponent(get('tn') || 'Donation');
         const am = get('am') || '';
         const cu = get('cu') || 'INR';
 
-        let upi = `upi://pay?pa=${encodeURIComponent(pa)}&pn=${encodeURIComponent(pn)}&tr=${encodeURIComponent(tr)}&tn=${encodeURIComponent(tn)}${am ? ('&am=' + encodeURIComponent(am)) : ''}&cu=${encodeURIComponent(cu)}`;
+        let upi = `upi://pay?pa=${encodeURIComponent(pa)}&pn=${encodeURIComponent(pn)}`;
 
         document.getElementById('msg').innerText = 'Opening UPI app...';
 
