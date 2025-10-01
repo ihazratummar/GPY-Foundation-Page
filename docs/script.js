@@ -3,16 +3,10 @@ const pa = get('pa') || 'isk7074018376-2@okaxis';
 const pn = decodeURIComponent(get('pn') || 'حىل فؤل فؤضؤل  Foundation');
 const tr = get('tr') || ('REF' + Date.now());
 const tn = decodeURIComponent(get('tn') || 'দান (সদকা/জাকাত/ফান্ড)');
-let am = get('am') || '';
 const cu = get('cu') || 'INR';
 
-// Ensure minimum amount is 1 if not set or invalid
-if (!am || isNaN(am) || Number(am) < 1) am = '50';
-
-// Don't encode @ in pa
+// Do NOT set a default amount and do NOT include am in UPI URL
 let upi = `upi://pay?pa=${pa}&pn=${encodeURIComponent(pn)}`;
-// Remove this line to allow editing amount in all apps
-// if (am) upi += `&am=${encodeURIComponent(am)}`;
 if (tr) upi += `&tr=${encodeURIComponent(tr)}`;
 if (tn) upi += `&tn=${encodeURIComponent(tn)}`;
 if (cu) upi += `&cu=${encodeURIComponent(cu)}`;
@@ -56,7 +50,7 @@ function showFallback() {
     document.getElementById('msg').style.display = 'none';
     document.getElementById('fallback').style.display = 'block';
     document.getElementById('vpaText').innerText = pa;
-    document.getElementById('amountText').innerText = am ? `পরিমাণ: ₹${am}` : '';
+    document.getElementById('amountText').innerText = 'পরিমাণ: আপনি ইচ্ছামত লিখতে পারবেন';
     document.getElementById('purposeText').innerText = tn ? `উদ্দেশ্য: ${tn}` : '';
     const qr = 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' + encodeURIComponent(upi);
     document.getElementById('qrImg').src = qr;
