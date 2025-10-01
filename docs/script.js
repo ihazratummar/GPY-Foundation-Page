@@ -1,6 +1,6 @@
 function get(q) { const u = new URL(location.href); return u.searchParams.get(q) || ''; }
-const pa = get('pa') || '7407714217@upi';
-const pn = decodeURIComponent(get('pn') || 'GPY Foundation');
+const pa = get('pa') || 'isk7074018376-2@okaxis';
+const pn = decodeURIComponent(get('pn') || 'حىل فؤل فؤضؤل  Foundation');
 const tr = get('tr') || ('REF' + Date.now());
 const tn = decodeURIComponent(get('tn') || 'দান (সদকা/জাকাত/ফান্ড)');
 let am = get('am') || '';
