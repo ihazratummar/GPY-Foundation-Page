@@ -11,7 +11,8 @@ if (!am || isNaN(am) || Number(am) < 1) am = '50';
 
 // Don't encode @ in pa
 let upi = `upi://pay?pa=${pa}&pn=${encodeURIComponent(pn)}`;
-if (am) upi += `&am=${encodeURIComponent(am)}`;
+// Remove this line to allow editing amount in all apps
+// if (am) upi += `&am=${encodeURIComponent(am)}`;
 if (tr) upi += `&tr=${encodeURIComponent(tr)}`;
 if (tn) upi += `&tn=${encodeURIComponent(tn)}`;
 if (cu) upi += `&cu=${encodeURIComponent(cu)}`;
